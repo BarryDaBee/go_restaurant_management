@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -13,7 +14,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Signup(c *gin.Context) {
+func Register(c *gin.Context) {
 	// Get the email and password
 	var body struct {
 		Email    string
@@ -78,7 +79,7 @@ func Login(c *gin.Context) {
 
 	// Generate a jwt token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.RegisteredClaims{
-		Subject:   string(user.ID),
+		Subject:   fmt.Sprintf("%v", user.ID),
 		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 30)),
 	})
 
@@ -91,7 +92,9 @@ func Login(c *gin.Context) {
 	// Send it back
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "", false, true)
-	c.JSON(http.StatusOK, gin.H{})
+	c.JSON(http.StatusOK, gin.H{
+		"token": tokenString,
+	})
 
 }
 
@@ -122,4 +125,37 @@ func Login2(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"token": token})
+}
+
+func Register2(ctx *gin.Context) {
+
+	var user models.User
+
+	if err := ctx.ShouldBindJSON(&user); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := user.HashPassword(); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	result := database.DB.Create(&user)
+
+	if result.Error != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Unable to create user"})
+		return
+	}
+
+	token, err := helpers.GenerateJWT(user.ID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"token":   token,
+		"message": "User registered successfully",
+	})
 }

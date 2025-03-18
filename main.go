@@ -15,7 +15,7 @@ func main() {
 	// 	port = "8080"
 	// }
 
-	database.con
+	database.ConnectDatabase()
 
 	router := gin.Default()
 

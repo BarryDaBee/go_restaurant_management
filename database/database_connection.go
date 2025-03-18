@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/BarryDaBee/go_restaurant_management/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -33,7 +34,13 @@ func ConnectDatabase() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
+	err = database.AutoMigrate(&models.User{}, &models.Food{}, &models.Order{})
+
+	if err != nil {
+		log.Fatal("Failed to connect to database:", err)
+	}
+
 	DB = database
 
-	log.Println("Databse connection established")
+	log.Println("Database connection established")
 }

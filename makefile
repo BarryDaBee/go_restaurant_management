@@ -1,4 +1,4 @@
 run:
-	go run main.go
+	@go run main.go
 tidy:
 	go mod tidy

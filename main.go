@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -71,7 +72,12 @@ func main() {
 	utility.LogAndPrint(logger, "Shutting down server...")
 
 	// Give outstanding requests time to complete
-	_ = time.Second * 5
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := httpServer.Shutdown(ctx); err != nil {
+		log.Printf("Server forced to shutdown: %v", err)
+	}
 
 	utility.LogAndPrint(logger, "Server exited properly")
 }

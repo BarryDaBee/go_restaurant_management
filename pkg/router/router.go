@@ -26,12 +26,11 @@ func Setup(logger *utility.Logger, validator *validator.Validate, storage storag
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	r.MaxMultipartMemory = 1 << 20
 
-	ApiVersion := "v1"
-	Health(r, ApiVersion, validator, logger, storage, configuration)
-	User(r, ApiVersion, validator, logger, storage, configuration)
-	Food(r, ApiVersion, validator, logger, storage, configuration)
-	Order(r, ApiVersion, validator, logger, storage, configuration)
-
+	apiVersion := "v1"
+	Health(r, apiVersion, validator, logger, storage, configuration)
+	User(r, apiVersion, validator, logger, storage, configuration)
+	Food(r, apiVersion, validator, logger, storage, configuration)
+	Order(r, apiVersion, validator, logger, storage, configuration)
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, utility.BuildErrorResponse(
 			http.StatusNotFound,

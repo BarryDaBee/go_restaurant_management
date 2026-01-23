@@ -12,7 +12,7 @@ import (
 
 	"github.com/BarryDaBee/go_restaurant_management/internal/config"
 	"github.com/BarryDaBee/go_restaurant_management/internal/repository/storage/postgresql"
-	"github.com/BarryDaBee/go_restaurant_management/models"
+	"github.com/BarryDaBee/go_restaurant_management/internal/models"
 	"github.com/BarryDaBee/go_restaurant_management/pkg/router"
 	"github.com/BarryDaBee/go_restaurant_management/utility"
 	"github.com/go-playground/validator/v10"

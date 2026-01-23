@@ -7,14 +7,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Name     string `gorm:"not null"`
-	Email    string `gorm:"unique;not null"`
-	Password string `gorm:"not null"`
+	Name     string `gorm:"not null" json:"name"`
+	Email    string `gorm:"unique;not null" json:"email"`
+	Password string `gorm:"not null" json:"-"`
 }
 
 func (user *User) HashPassword() error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
-
 	if err != nil {
 		return err
 	}

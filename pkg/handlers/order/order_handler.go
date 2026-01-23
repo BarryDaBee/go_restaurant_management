@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/BarryDaBee/go_restaurant_management/models"
+	"github.com/BarryDaBee/go_restaurant_management/internal/models"
 	orderService "github.com/BarryDaBee/go_restaurant_management/services/order"
 	"github.com/BarryDaBee/go_restaurant_management/utility"
 	"github.com/gin-gonic/gin"

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/BarryDaBee/go_restaurant_management/internal/repository/storage"
-	"github.com/BarryDaBee/go_restaurant_management/models"
+	"github.com/BarryDaBee/go_restaurant_management/internal/models"
 	"github.com/BarryDaBee/go_restaurant_management/utility"
 )
 
